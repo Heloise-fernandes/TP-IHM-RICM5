@@ -48,16 +48,60 @@ public class RangeSliderUI extends BasicSliderUI {
 		super(b);
 	}
 	
-	
+	@Override
+	public void paintThumb(Graphics g){}
 	
 	public void paintThumbRight(Graphics g)  
 	{
+		
         Rectangle rightBound = thumbRectNew;
         
         int wR = rightBound.width;
         int hR = rightBound.height;
         
         g.translate(rightBound.x, rightBound.y);
+        
+        if ( slider.isEnabled() ) {
+            g.setColor(slider.getBackground());
+        }
+        else {
+            g.setColor(slider.getBackground().darker());
+        }
+
+        Boolean paintThumbArrowShape = (Boolean) slider.getClientProperty("Slider.paintThumbArrowShape");
+
+        if ((!slider.getPaintTicks() && paintThumbArrowShape == null) || paintThumbArrowShape == Boolean.FALSE) {
+
+            // "plain" version
+            g.fillRect(0, 0, wR, hR);
+
+            g.setColor(Color.black);
+            g.drawLine(0, hR-1, wR-1, hR-1);//right
+            g.drawLine(wR-1, 0, wR-1, hR-1);//bottom
+
+            g.setColor(highlightColor);
+            g.drawLine(0, 0, 0, hR-2); //left
+            g.drawLine(1, 0, wR-2, 0); //top
+
+            g.setColor(shadowColor);
+            g.drawLine(1, hR-2, wR-2, hR-2);//bottom
+            g.drawLine(wR-2, 1, wR-2, hR-3);//right
+            
+        }
+        g.translate(-rightBound.x, -rightBound.y);
+            
+        
+    }
+	
+	public void paintThumbLeft(Graphics g)  
+	{
+		
+        Rectangle leftBound = thumbRect;
+        
+        int wR = leftBound.width;
+        int hR = leftBound.height;
+        
+        g.translate(leftBound.x, leftBound.y);
         
         //TODO verify slider
         if ( slider.isEnabled() ) {
@@ -87,79 +131,10 @@ public class RangeSliderUI extends BasicSliderUI {
             g.drawLine(wR-2, 1, wR-2, hR-3);
             
         }
-        else if ( slider.getOrientation() == JSlider.HORIZONTAL ) {
-            int cw = wR / 2;
-            g.fillRect(1, 1, wR-3, hR-1-cw);
-            Polygon p = new Polygon();
-            p.addPoint(1, hR-cw);
-            p.addPoint(cw-1, hR-1);
-            p.addPoint(wR-2, hR-1-cw);
-            g.fillPolygon(p);
-
-            g.setColor(highlightColor);
-            g.drawLine(0, 0, wR-2, 0);
-            g.drawLine(0, 1, 0, hR-1-cw);
-            g.drawLine(0, hR-cw, cw-1, hR-1);
-
-            g.setColor(Color.black);
-            g.drawLine(wR-1, 0, wR-1, hR-2-cw);
-            g.drawLine(wR-1, hR-1-cw, wR-1-cw, hR-1);
-
-            g.setColor(shadowColor);
-            g.drawLine(wR-2, 1, wR-2, hR-2-cw);
-            g.drawLine(wR-2, hR-1-cw, wR-1-cw, hR-2);
-
-            
-        }/*
-        else {  // vertical
-            int cw = hR / 2;
-            if(BasicGraphicsUtils.isLeftToRight(slider)) {
-                  g.fillRect(1, 1, wR-1-cw, hR-3);
-                  Polygon p = new Polygon();
-                  p.addPoint(wR-cw-1, 0);
-                  p.addPoint(wR-1, cw);
-                  p.addPoint(wR-1-cw, hR-2);
-                  g.fillPolygon(p);
-
-                  g.setColor(super.getHighlightColor());
-                  g.drawLine(0, 0, 0, hR - 2);                  // left
-                  g.drawLine(1, 0, wR-1-cw, 0);                 // top
-                  g.drawLine(wR-cw-1, 0, wR-1, cw);              // top slant
-
-                  g.setColor(Color.black);
-                  g.drawLine(0, hR-1, wR-2-cw, hR-1);             // bottom
-                  g.drawLine(wR-1-cw, hR-1, wR-1, hR-1-cw);        // bottom slant
-
-                  g.setColor(super.getShadowColor());
-                  g.drawLine(1, hR-2, wR-2-cw,  hR-2 );         // bottom
-                  g.drawLine(wR-1-cw, hR-2, wR-2, hR-cw-1 );     // bottom slant
-            }
-            else {
-                  g.fillRect(5, 1, wR-1-cw, hR-3);
-                  Polygon p = new Polygon();
-                  p.addPoint(cw, 0);
-                  p.addPoint(0, cw);
-                  p.addPoint(cw, hR-2);
-                  g.fillPolygon(p);
-
-                  g.setColor(super.getHighlightColor());
-                  g.drawLine(cw-1, 0, wR-2, 0);             // top
-                  g.drawLine(0, cw, cw, 0);                // top slant
-
-                  g.setColor(Color.black);
-                  g.drawLine(0, hR-1-cw, cw, hR-1 );         // bottom slant
-                  g.drawLine(cw, hR-1, wR-1, hR-1);           // bottom
-
-                  g.setColor(super.getShadowColor());
-                  g.drawLine(cw, hR-2, wR-2,  hR-2 );         // bottom
-                  g.drawLine(wR-1, 1, wR-1,  hR-2 );          // right
-            }
-        }*/
-
-        g.translate(-rightBound.x, -rightBound.y);
+        g.translate(-leftBound.x, -leftBound.y);
     }
 	
-	public static ComponentUI createUI(JComponent b)    {
+	public static ComponentUI createUI(JComponent b) {
         return new BasicSliderUI((JSlider)b);
     }
 
@@ -175,16 +150,19 @@ public class RangeSliderUI extends BasicSliderUI {
     
     public void paint( Graphics g, JComponent c )   {
         super.paint(g, c);
-        if ( g.getClipBounds().intersects( thumbRectNew ) ) {
-        	paintThumbRight( g );
-        }
+        paintThumbLeft(g);
+        paintThumbRight(g);
+       
     }
+
     
-    
-    protected void calculateThumbRightLocation() {
+    @Override
+    protected void calculateThumbLocation() {
+    	super.calculateThumbLocation();
+    	
         if ( slider.getSnapToTicks() ) {
-            int sliderValue = slider.getValue();
-            int snappedValue = sliderValue;
+            int rightValue = ((RangeSlider) slider).getSecondBound();
+            int snappedValue = rightValue;
             int majorTickSpacing = slider.getMajorTickSpacing();
             int minorTickSpacing = slider.getMinorTickSpacing();
             int tickSpacing = 0;
@@ -198,37 +176,224 @@ public class RangeSliderUI extends BasicSliderUI {
 
             if ( tickSpacing != 0 ) {
                 // If it's not on a tick, change the value
-                if ( (sliderValue - slider.getMinimum()) % tickSpacing != 0 ) {
-                    float temp = (float)(sliderValue - slider.getMinimum()) / (float)tickSpacing;
+                if ( (rightValue - slider.getMinimum()) % tickSpacing != 0 ) {
+                    float temp = (float)(rightValue - slider.getMinimum()) / (float)tickSpacing;
                     int whichTick = Math.round( temp );
 
                     // This is the fix for the bug #6401380
-                    if (temp - (int)temp == .5 && sliderValue < lastValue) {
+                    if (temp - (int)temp == .5 && rightValue < lastValue) {
                       whichTick --;
                     }
                     snappedValue = slider.getMinimum() + (whichTick * tickSpacing);
                 }
 
-                if( snappedValue != sliderValue ) {
-                    slider.setValue( snappedValue );
+                if( snappedValue != rightValue ) {
+                    slider.setExtent( snappedValue - slider.getMinimum() );
                 }
             }
         }
 
         if ( slider.getOrientation() == JSlider.HORIZONTAL ) {
-            int valuePosition = xPositionForValue(slider.getValue());
+            int rightPosition = xPositionForValue(((RangeSlider) slider).getSecondBound());
 
-            thumbRectNew.x = valuePosition - (thumbRectNew.width / 2);
+            thumbRectNew.x = rightPosition - (thumbRectNew.width / 2);
             thumbRectNew.y = trackRect.y;
         }
         else {
-            int valuePosition = yPositionForValue(slider.getValue());
+            int rightPosition = yPositionForValue(slider.getValue());
 
             thumbRectNew.x = trackRect.x;
-            thumbRectNew.y = valuePosition - (thumbRectNew.height / 2);
+            thumbRectNew.y = rightPosition - (thumbRectNew.height / 2);
         }
     }
     
+    //tracklistener
+    //changelistener
+    
+    protected void calculateThumbSize()
+    {
+    	super.calculateThumbSize();
+    	thumbRectNew.setSize(thumbRect.width, thumbRect.height);
+    }
+    
+    @Override
+    public void paintTrack(Graphics g)  {
+    	super.paintTrack(g);
+    	//pour ajouter couleur entre les thumb 
+    }
+    
+    public void setRightThumbLocation(int x, int y)  {
+        Rectangle rightUnion = new Rectangle(); 
+        rightUnion.setBounds( thumbRectNew );
+
+        thumbRectNew.setLocation( x, y );
+
+        SwingUtilities.computeUnion( thumbRectNew.x, thumbRectNew.y, thumbRectNew.width, thumbRectNew.height, rightUnion );
+        slider.repaint( rightUnion.x, rightUnion.y, rightUnion.width, rightUnion.height );
+    }
+    
+
+    @Override
+    protected TrackListener createTrackListener(JSlider slider) {
+        return new RangeTrackListener();
+    }
+
+    @Override
+    protected ChangeListener createChangeListener(JSlider slider) {
+        return new ChangeThumbListener();
+    }
+    
+    public class ChangeThumbListener implements ChangeListener {
+        public void stateChanged(ChangeEvent arg0) {
+            if (!isDraggingLeft && !isDraggingRight) {
+                calculateThumbLocation();
+                slider.repaint();
+            }
+        }
+    }
+    
+    public class RangeTrackListener extends TrackListener {
+        
+    	@Override
+        public void mouseReleased(MouseEvent e) {
+    		isDraggingLeft = false;
+    		isDraggingRight	 = false;
+            slider.setValueIsAdjusting(false);
+            super.mouseReleased(e);
+        }
+    	
+    	@Override
+        public void mousePressed(MouseEvent e) {
+            if (!slider.isEnabled()) {
+                return;
+            }
+
+            currentMouseX = e.getX();
+            currentMouseY = e.getY();
+
+            if (slider.isRequestFocusEnabled()) {
+                slider.requestFocus();
+            }
+            
+            // Determine which thumb is pressed.  If the upper thumb is 
+            // selected (last one dragged), then check its position first;
+            // otherwise check the position of the lower thumb first.
+            boolean leftPressed = false;
+            boolean rightPressed = false;
+            if (thumbRectNew.contains(currentMouseX, currentMouseY)) {
+                   rightPressed = true;
+            } else if (thumbRect.contains(currentMouseX, currentMouseY)) {
+                  leftPressed = true;
+            }
+
+            // Handle lower thumb pressed.
+            if (leftPressed) {
+                switch (slider.getOrientation()) {
+                case JSlider.VERTICAL:
+                    offset = currentMouseY - thumbRect.y;
+                    break;
+                case JSlider.HORIZONTAL:
+                    offset = currentMouseX - thumbRect.x;
+                    break;
+                }
+                //upperThumbSelected = false;
+                isDraggingLeft = true;
+                return;
+            }
+            isDraggingLeft = false;
+            
+            // Handle upper thumb pressed.
+            if (rightPressed) {
+                switch (slider.getOrientation()) {
+                case JSlider.VERTICAL:
+                    offset = currentMouseY - thumbRectNew.y;
+                    break;
+                case JSlider.HORIZONTAL:
+                    offset = currentMouseX - thumbRectNew.x;
+                    break;
+                }
+                //upperThumbSelected = true;
+                isDraggingRight = true;
+                return;
+            }
+            isDraggingRight = false;
+        }
+    	
+    	@Override
+        public void mouseDragged(MouseEvent e) {
+            if (!slider.isEnabled()) {
+                return;
+            }
+
+            currentMouseX = e.getX();
+            currentMouseY = e.getY();
+
+            if (isDraggingLeft) {
+                slider.setValueIsAdjusting(true);
+                mouseDraggedLeftThumb();
+                
+            } else if (isDraggingRight) {
+                slider.setValueIsAdjusting(true);
+                mouseDraggedRightThumb();
+            }
+        }
+    	
+    	private void mouseDraggedLeftThumb() {
+            int thumbMiddle = 0;
+           
+            int halfThumbWidth = thumbRect.width / 2;
+            int thumbLeft = currentMouseX - offset;
+            int trackLeft = trackRect.x;
+            int trackRight = trackRect.x + (trackRect.width - 1);
+            int hMax = xPositionForValue(((RangeSlider) slider).getSecondBound());
+
+            // Apply bounds to thumb position.
+            if (drawInverted()) {
+                trackLeft = hMax;
+            } else {
+                trackRight = hMax;
+            }
+            thumbLeft = Math.max(thumbLeft, trackLeft - halfThumbWidth);
+            thumbLeft = Math.min(thumbLeft, trackRight - halfThumbWidth);
+
+            setThumbLocation(thumbLeft, thumbRect.y);
+
+            // Update slider value.
+            thumbMiddle = thumbLeft + halfThumbWidth;
+            ((RangeSlider) slider).setFirstBound(valueForXPosition(thumbMiddle));
+        }
+
+
+        private void mouseDraggedRightThumb() {
+            int thumbMiddle = 0;
+            
+            int halfThumbWidth = thumbRect.width / 2;
+            int thumbLeft = currentMouseX - offset;
+            int trackLeft = trackRect.x;
+            int trackRight = trackRect.x + (trackRect.width - 1);
+            int hMin = xPositionForValue(((RangeSlider) slider).getFirstBound());
+
+            // Apply bounds to thumb position.
+            if (drawInverted()) {
+                trackRight = hMin;
+            } else {
+                trackLeft = hMin;
+            }
+            thumbLeft = Math.max(thumbLeft, trackLeft - halfThumbWidth);
+            thumbLeft = Math.min(thumbLeft, trackRight - halfThumbWidth);
+
+            setRightThumbLocation(thumbLeft, thumbRect.y);
+            
+            // Update slider extent.
+            thumbMiddle = thumbLeft + halfThumbWidth;
+            slider.setExtent(slider.getMaximum() - valueForXPosition(thumbMiddle));
+        }
+    	
+    	@Override
+        public boolean shouldScroll(int direction) {
+            return false;
+        }
+    }
     
     
     

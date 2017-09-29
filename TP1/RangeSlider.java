@@ -6,9 +6,20 @@ public class RangeSlider extends JSlider implements RangeSliderInterface
 
 	private int minimum;
 	private int maximum;
-	private int firstBound;
-	private int secondBound;
 	
+	public RangeSlider(int min, int max, int firstBound, int secondBound) {
+		this.minimum = min;
+		this.maximum = max;
+		this.setFirstBound(firstBound);
+		this.setSecondBound(secondBound);
+	}
+	
+	public RangeSlider(int min, int max) {
+		this.minimum = min;
+		this.maximum = max;
+		this.setFirstBound(min);
+		this.setSecondBound(max);
+	}
 	
 	@Override
 	public int getMinimum() {
@@ -22,36 +33,26 @@ public class RangeSlider extends JSlider implements RangeSliderInterface
 
 	@Override
 	public int getFirstBound() {
-		return firstBound;
+		return getValue();
 	}
 
 	@Override
 	public int getSecondBound() {
-		return secondBound;
+		return getMaximum()-getExtent();
 	}
 
 	@Override
-	public int extentMax() {
-		return this.maximum - this.minimum;
+	public int getExtent() {
+		return super.getExtent();
 	}
 
 	@Override
-	public int extentSelected() {
-		return this.secondBound - this.secondBound;
+	public void setExtent(int extent) {
+		super.setExtent(extent);
 	}
-
-	
-	public RangeSlider(int min, int max, int firstBound, int secondBound) {
-		// TODO Auto-generated method stub
-	}
-
-	
-	public RangeSlider(int min, int max) {
-		// TODO Auto-generated method stub
-	}
-
 	@Override
 	public void addChangeListener(ChangeListener firstBoundListener, ChangeListener secondBoundListener) {
+		
 		// TODO Auto-generated method stub
 		
 	}
@@ -65,27 +66,33 @@ public class RangeSlider extends JSlider implements RangeSliderInterface
 	@Override
 	public void setMinimum(int min) {
 		this.minimum = min;
-		//TODO
 	}
 
 	@Override
 	public void setMaximum(int max) {
 		this.maximum = max;
-		//TODO
 	}
 
 	@Override
 	public void setFirstBound(int first) {
-		this.firstBound = first;
-		//TODO
+		super.setValue(first);
 		
 	}
 
 	@Override
+	public void setValue(int i)
+	{
+		super.setValue(i);
+	}
+	
+	public int getValue()
+	{
+		return super.getValue();
+	}
+	
+	@Override
 	public void setSecondBound(int second) {
-		this.secondBound = second;
-		//TODO
-		
+		super.setExtent(getMaximum()-second);
 	}
 	
 	public void updateUI() {

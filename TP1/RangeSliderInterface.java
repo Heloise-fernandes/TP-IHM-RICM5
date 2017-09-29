@@ -8,8 +8,6 @@ public interface RangeSliderInterface {
     public int getFirstBound();
     public int getSecondBound();
     
-    public int extentMax();
-    public int extentSelected();
     
     public void setMinimum(int min);
     public void setMaximum(int max);
