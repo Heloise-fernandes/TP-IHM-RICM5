@@ -1,5 +1,6 @@
 package ichachouch;
 
+import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -22,19 +23,20 @@ public class Frame extends JFrame{
 	public Frame(){
 		JFrame mainWindow = new JFrame();
 		JPanel mySuperJPanel = new JPanel();
+		Canvas myUbiquitousCanvas = new Canvas();
 		mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		mySuperJPanel.setSize(500, 500);
-		MyAwesomeScreen mysc = new MyAwesomeScreen(5,5,4*mySuperJPanel.getWidth()/5,mySuperJPanel.getHeight()-50);
-		mySuperJPanel.add(mysc);
+		mainWindow.setSize(500, 500);
+		MyAwesomeScreen mysc = new MyAwesomeScreen(5,5,4*mainWindow.getWidth()/5,mainWindow.getHeight()-50);
+		mainWindow.add(mysc);
 		
-		Homes homes = new Homes(5,5,4*mySuperJPanel.getWidth()/5,mySuperJPanel.getHeight()-50, 5);
+		Homes homes = new Homes(5,5,4*mainWindow.getWidth()/5,mainWindow.getHeight()-50, 5);
 		for (int i=0; i<homes.homeList.size(); i++){
 			System.out.println(homes.homeList.get(i).location.toString());
-			//mySuperJPanel.add(homes.homeList.get(i));
+			mainWindow.add(homes.homeList.get(i));
 		}
-		mySuperJPanel.validate();
-		mainWindow.add(mySuperJPanel);
-		mainWindow.setSize(500,500);
+		mainWindow.validate();
+		//mainWindow.add(mySuperJPanel);
+		//mainWindow.setSize(500,500);
 
 		mainWindow.setLocationRelativeTo(null);
 		mainWindow.setVisible(true);

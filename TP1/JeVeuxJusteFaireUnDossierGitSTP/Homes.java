@@ -19,7 +19,7 @@ public class Homes {
 	public ArrayList<Home> homeList = new ArrayList<Home>();
 
 	public Homes(int resolutionX, int resolutionY, int resolutionW, int resolutionH, int numberHome){
-		
+
 		for (int i =0; i<numberHome; i++){
 			int X = ThreadLocalRandom.current().nextInt(resolutionX, resolutionW + 1);
 			int Y = ThreadLocalRandom.current().nextInt(resolutionY, resolutionH + 1);
@@ -29,29 +29,46 @@ public class Homes {
 
 	}
 
+	public void changeVisibilityPrice(int lowerbound, int upperbound){
+		for (int i=0; i<homeList.size();i++){
+			if ((homeList.get(i).price >=lowerbound)||(homeList.get(i).price <=upperbound)){
+				homeList.get(i).isDisplayed = true;
+			}
+			else {
+				homeList.get(i).isDisplayed = false;
+			}
+		}
+	}
+
 	class Home extends JPanel{
+		boolean isDisplayed;
+		int price;
+
 		Point location;
 		public Image image;
 
 		public Home(Point xy){
 			try {                
-	            image = ImageIO.read(new File("src/house.jpg"));
-	            image = image.getScaledInstance(10, 10, Image.SCALE_DEFAULT);
+				image = ImageIO.read(new File("src/house.jpg"));
+				image = image.getScaledInstance(10, 10, Image.SCALE_DEFAULT);
 			} catch (IOException ex) {
 				System.out.println("l'image a fail :'(");
 			}
 			location = xy;
+			isDisplayed = true;
 		}
 
 		@Override
 		protected void paintComponent(Graphics g) {
-			super.paintComponent(g);
-			System.out.println("paintcompo called : x="+location.x+" y="+location.y );
-			g.drawImage(image, location.x, location.y, this);            
+			if (isDisplayed){
+				super.paintComponent(g);
+				System.out.println("paintcompo called : x="+location.x+" y="+location.y );
+				g.drawImage(image, location.x, location.y, this);            
+			}
 		}
-		
+
 		public Dimension getPreferredSize() {
-		    return new Dimension(10, 10); // appropriate constants
+			return new Dimension(10, 10); // appropriate constants
 		}
 	}
 
