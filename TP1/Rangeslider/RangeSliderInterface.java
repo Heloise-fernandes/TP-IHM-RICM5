@@ -1,4 +1,4 @@
-package main;
+package Rangeslider;
 import javax.swing.event.ChangeListener;
 
 import jdk.nashorn.internal.objects.annotations.Constructor;

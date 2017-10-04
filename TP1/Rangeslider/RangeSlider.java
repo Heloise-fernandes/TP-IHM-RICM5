@@ -1,4 +1,4 @@
-package main;
+package Rangeslider;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeListener;
 

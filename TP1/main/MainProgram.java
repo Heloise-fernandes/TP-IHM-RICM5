@@ -8,25 +8,27 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import JeVeuxJusteFaireUnDossierGitSTP.Map;
+import Rangeslider.ListenerChange;
+import Rangeslider.RangeSlider;
+import map.Map;
 
 public class MainProgram {
 
 	public static void main(String[] args) {
 		
 		// TODO Auto-generated method stub
-		int max = 200;
-		int min = 100;
+		int max = 1000;
+		int min = 500;
 		
 		JFrame mainWindow = new JFrame();
 		mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		mainWindow.setSize(1000, 1000);
+		mainWindow.setSize(500, 500);
 		
 		
 		RangeSlider rangeSlide = new RangeSlider(min, max);	
 		JLabel minLabel = new JLabel("Min : "+rangeSlide.getFirstBound());
 		JLabel maxLabel = new JLabel("Max : "+rangeSlide.getSecondBound());
-		Map laCarte = new Map(300,300,30,min, max);
+		Map laCarte = new Map(350,350,100,min, max);
 		rangeSlide.addChangeListener(laCarte);
 		rangeSlide.addChangeListener(new ListenerChange(minLabel, maxLabel));
 		
@@ -39,7 +41,7 @@ public class MainProgram {
 		
 		JSplitPane mainpannel = new JSplitPane(JSplitPane.VERTICAL_SPLIT,laCarte,objectSlider);
 		mainpannel.setDividerSize(10);
-		mainpannel.setResizeWeight(0.8);
+		mainpannel.setResizeWeight(0.95);
 		
 		mainWindow.add(mainpannel);
 		

@@ -1,4 +1,4 @@
-package main;
+package Rangeslider;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Adjustable;
@@ -364,7 +364,7 @@ public class RangeSliderUI extends BasicSliderUI {
             // Update slider value.
             thumbMiddle = thumbLeft + halfThumbWidth;
             
-            slider.setValue(valueForXPosition(thumbMiddle));
+            ((RangeSlider) slider).setFirstBound(valueForXPosition(thumbMiddle));
             
         }
 
@@ -391,7 +391,7 @@ public class RangeSliderUI extends BasicSliderUI {
             
             // Update slider extent.
             thumbMiddle = thumbLeft + halfThumbWidth;
-            slider.setExtent(slider.getMaximum() - valueForXPosition(thumbMiddle));
+            ((RangeSlider) slider).setSecondBound(valueForXPosition(thumbMiddle));
         }
     	
     	@Override
