@@ -15,16 +15,17 @@ public class MainProgram {
 	public static void main(String[] args) {
 		
 		// TODO Auto-generated method stub
-		int max = 100;
-		int min = 10;
+		int max = 200;
+		int min = 100;
 		
 		JFrame mainWindow = new JFrame();
 		mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		mainWindow.setSize(500, 500);
+		mainWindow.setSize(1000, 1000);
 		
-		JLabel minLabel = new JLabel("Min : "+min);
-		JLabel maxLabel = new JLabel("Max : "+max);
+		
 		RangeSlider rangeSlide = new RangeSlider(min, max);	
+		JLabel minLabel = new JLabel("Min : "+rangeSlide.getFirstBound());
+		JLabel maxLabel = new JLabel("Max : "+rangeSlide.getSecondBound());
 		Map laCarte = new Map(300,300,30,min, max);
 		rangeSlide.addChangeListener(laCarte);
 		rangeSlide.addChangeListener(new ListenerChange(minLabel, maxLabel));

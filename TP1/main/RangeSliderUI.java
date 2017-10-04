@@ -347,7 +347,7 @@ public class RangeSliderUI extends BasicSliderUI {
             int trackLeft = trackRect.x;
             int trackRight = trackRect.x + (trackRect.width - 1);
             int hMax = xPositionForValue(((RangeSlider) slider).getSecondBound());
-
+            
             // Apply bounds to thumb position.
             if (drawInverted()) {
                 trackLeft = hMax;
@@ -357,11 +357,15 @@ public class RangeSliderUI extends BasicSliderUI {
             thumbLeft = Math.max(thumbLeft, trackLeft - halfThumbWidth);
             thumbLeft = Math.min(thumbLeft, trackRight - halfThumbWidth);
 
+            
+            
             setThumbLocation(thumbLeft, thumbRect.y);
 
             // Update slider value.
             thumbMiddle = thumbLeft + halfThumbWidth;
-            ((RangeSlider) slider).setFirstBound(valueForXPosition(thumbMiddle));
+            
+            slider.setValue(valueForXPosition(thumbMiddle));
+            
         }
 
 

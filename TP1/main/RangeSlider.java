@@ -5,31 +5,28 @@ import javax.swing.event.ChangeListener;
 public class RangeSlider extends JSlider implements RangeSliderInterface
 {
 
-	private int minimum;
-	private int maximum;
-	
 	public RangeSlider(int min, int max, int firstBound, int secondBound) {
-		this.minimum = min;
-		this.maximum = max;
+		super.setMaximum(max);
+		super.setMinimum(min);
 		this.setFirstBound(firstBound);
 		this.setSecondBound(secondBound);
 	}
 	
 	public RangeSlider(int min, int max) {
-		this.minimum = min;
-		this.maximum = max;
+		super.setMaximum(max);
+		super.setMinimum(min);
 		this.setFirstBound(min);
 		this.setSecondBound(max);
 	}
 	
 	@Override
 	public int getMinimum() {
-		return minimum;
+		return super.getMinimum();
 	}
 
 	@Override
 	public int getMaximum() {
-		return maximum;
+		return super.getMaximum();
 	}
 
 	@Override
@@ -54,12 +51,12 @@ public class RangeSlider extends JSlider implements RangeSliderInterface
 
 	@Override
 	public void setMinimum(int min) {
-		this.minimum = min;
+		super.setMinimum(min);
 	}
 
 	@Override
 	public void setMaximum(int max) {
-		this.maximum = max;
+		super.setMaximum(max);
 	}
 
 	@Override

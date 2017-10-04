@@ -14,6 +14,6 @@ public interface RangeSliderInterface {
     public void setMaximum(int max);
     public void setFirstBound(int first);
     public void setSecondBound(int second);
-       
+
 
 }
