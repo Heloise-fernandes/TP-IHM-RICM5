@@ -1,4 +1,4 @@
-package JeVeuxJusteFaireUnDossierGitSTP;
+package map;
 
 
 import java.awt.Color;
@@ -16,7 +16,7 @@ import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import main.RangeSlider;
+import Rangeslider.RangeSlider;
  
 
 public class Map extends JPanel implements ChangeListener{

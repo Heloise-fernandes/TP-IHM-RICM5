@@ -1,4 +1,4 @@
-package JeVeuxJusteFaireUnDossierGitSTP;
+package map;
 
 import java.awt.Canvas;
 import java.awt.Color;
