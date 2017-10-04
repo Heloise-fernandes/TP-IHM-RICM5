@@ -1,3 +1,4 @@
+package main;
 import javax.swing.event.ChangeListener;
 
 import jdk.nashorn.internal.objects.annotations.Constructor;
@@ -14,7 +15,5 @@ public interface RangeSliderInterface {
     public void setFirstBound(int first);
     public void setSecondBound(int second);
        
-    public void addChangeListener(ChangeListener firstBoundListener, ChangeListener secondBoundListener);
-    public void removechangeListener(ChangeListener x);
 
 }

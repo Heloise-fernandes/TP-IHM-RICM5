@@ -1,4 +1,4 @@
-package ichachouch;
+package JeVeuxJusteFaireUnDossierGitSTP;
 
 public class MainProg {
 

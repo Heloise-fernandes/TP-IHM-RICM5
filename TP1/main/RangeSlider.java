@@ -1,3 +1,4 @@
+package main;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeListener;
 
@@ -49,18 +50,6 @@ public class RangeSlider extends JSlider implements RangeSliderInterface
 	@Override
 	public void setExtent(int extent) {
 		super.setExtent(extent);
-	}
-	@Override
-	public void addChangeListener(ChangeListener firstBoundListener, ChangeListener secondBoundListener) {
-		
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void removechangeListener(ChangeListener x) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

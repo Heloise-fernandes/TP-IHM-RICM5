@@ -1,4 +1,4 @@
-package ichachouch;
+package JeVeuxJusteFaireUnDossierGitSTP;
 
 import java.awt.Canvas;
 import java.awt.Color;
@@ -22,48 +22,14 @@ public class Frame extends JFrame{
 
 	public Frame(){
 		JFrame mainWindow = new JFrame();
-		JPanel mySuperJPanel = new JPanel();
-		Canvas myUbiquitousCanvas = new Canvas();
+		Map laCarte = new Map(300,300,15,15,40);
 		mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mainWindow.setSize(500, 500);
-		MyAwesomeScreen mysc = new MyAwesomeScreen(5,5,4*mainWindow.getWidth()/5,mainWindow.getHeight()-50);
-		mainWindow.add(mysc);
+		mainWindow.add(laCarte);
 		
-		Homes homes = new Homes(5,5,4*mainWindow.getWidth()/5,mainWindow.getHeight()-50, 5);
-		for (int i=0; i<homes.homeList.size(); i++){
-			System.out.println(homes.homeList.get(i).location.toString());
-			mainWindow.add(homes.homeList.get(i));
-		}
-		mainWindow.validate();
-		//mainWindow.add(mySuperJPanel);
-		//mainWindow.setSize(500,500);
 
-		mainWindow.setLocationRelativeTo(null);
 		mainWindow.setVisible(true);
 	}
 
-
-
-	class MyAwesomeScreen extends JPanel {
-		int startX,startY,width,height;
-		
-		public MyAwesomeScreen(int x, int y, int w, int h){
-			startX = x;
-			startY = y;
-			width = w;
-			height = h;
-			
-		}
-		public void paint(Graphics g) {		
-			g.setColor(Color.LIGHT_GRAY);
-			g.drawRect (startX,startY,width,height);
-			g.fillRect(startX,startY,width,height);
-			g.setColor(Color.black);
-		}
-		
-		public Dimension getPreferredSize() {
-		    return new Dimension(width, height); // appropriate constants
-		}
-	}
 
 }
