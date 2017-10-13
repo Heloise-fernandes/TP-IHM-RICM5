@@ -56,6 +56,16 @@ export let drag =       ( element               : HTMLElement
                         , Pt_coord_parent       : SVGPoint
                         ) => {
 	// TO BE DONE
+    originalMatrix.e = Pt_coord_parent.x - originalMatrix.a*Pt_coord_element.x - originalMatrix.c*Pt_coord_element.y;
+    originalMatrix.f = Pt_coord_parent.y - originalMatrix.b*Pt_coord_element.x - originalMatrix.d*Pt_coord_element.y;
+
+    setMatrixCoordToElement(element,
+        originalMatrix.a,
+        originalMatrix.b,
+        originalMatrix.c,
+        originalMatrix.d,
+        originalMatrix.e,
+        originalMatrix.f);
 };
 
 //______________________________________________________________________________________________________________________
@@ -67,5 +77,37 @@ export let rotozoom =   ( element           : HTMLElement
                         , Pt2_coord_parent  : SVGPoint
                         ) => {
 	// TO BE DONE
+    let dx  = Pt2_coord_element.x  - Pt1_coord_element.x;
+    let dy  = Pt2_coord_element.y  - Pt1_coord_element.y;
+    let dxPrim = Pt2_coord_parent.x - Pt1_coord_parent.x;
+    let dyPRim = Pt2_coord_parent.y - Pt1_coord_parent.y;
+
+    let s = 0;
+    let c = 0;
+
+    if(dx===0 && dy===0) {
+        //fail
+    } else if(dx===0 && dy!==0) {
+        s=-dxPrim/dy;
+        c=dyPRim/dy;
+    } else if(dx!==0 && dy===0) {
+        s= dyPRim/dx;
+        c=dxPrim/dx;
+    } else if(dx!==0 && dy!==0) {
+        s = (dyPRim/dy - dxPrim/dx) / (dy/dx + dx/dy);
+        c = (dxPrim + s*dy)/dx;
+    }
+
+    originalMatrix.e = Pt1_coord_parent.x - c*Pt1_coord_element.x + s*Pt1_coord_element.y;
+    originalMatrix.f = Pt1_coord_parent.y - s*Pt1_coord_element.x - c*Pt1_coord_element.y;
+
+    setMatrixCoordToElement(element,
+        originalMatrix.a,
+        originalMatrix.b,
+        originalMatrix.c,
+        originalMatrix.d,
+        originalMatrix.e,
+        originalMatrix.f);
+
 };
 

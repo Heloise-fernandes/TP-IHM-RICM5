@@ -8,7 +8,6 @@ let PromesseDocumentPret = new Promise( (resolve) => {
     }
 });
 
-
 PromesseDocumentPret.then( () => {
     $( ".multiTouchCopntainer img, .multiTouchCopntainer video" );
 });
