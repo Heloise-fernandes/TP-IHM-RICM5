@@ -30,15 +30,15 @@ function multiTouch(element: HTMLElement) : void {
                 eventName: ["touchstart"],
                 useCapture: false,
                 action: (evt : TouchEvent) : boolean => {
-
+                    //selection de l'identifiant du premier doigt
                     pointerId_1 = evt.changedTouches.item(0).identifier;
 
-                    Pt1_coord_parent = transfo.getPoint(
-                        evt.changedTouches.item(0).clientX,
-                        evt.changedTouches.item(0).clientY);
-
+                    //Initialiser les coordonées et la ma matrice du premier point
+                    let touch = getRelevantDataFromEvent(evt);
+                    Pt1_coord_parent = transfo.getPoint(touch.clientX,touch.clientY);
                     originalMatrix = transfo.getMatrixFromElement(element);
 
+                    //premiere translation
                     Pt1_coord_element = Pt1_coord_parent.matrixTransform(originalMatrix.inverse());
 
                     return true;
@@ -52,10 +52,11 @@ function multiTouch(element: HTMLElement) : void {
                     evt.preventDefault();
                     evt.stopPropagation();
 
-                    Pt1_coord_parent= transfo.getPoint(
-                        evt.changedTouches.item(0).clientX,
-                        evt.changedTouches.item(0).clientY);
+                    //modifier les coordonnées du point
+                    let touch = getRelevantDataFromEvent(evt);
+                    Pt1_coord_parent = transfo.getPoint(touch.clientX,touch.clientY);
 
+                    //translater
                     transfo.drag(element,originalMatrix,Pt1_coord_element,Pt1_coord_parent);
                     return true;
                 }
@@ -66,6 +67,8 @@ function multiTouch(element: HTMLElement) : void {
                 eventName: ["touchend"],
                 useCapture: true,
                 action: (evt : TouchEvent) : boolean => {
+                    //mettre à null l'identifiant du doigt
+                    pointerId_1 = null;
                     return true;
                 }
             },
@@ -74,12 +77,12 @@ function multiTouch(element: HTMLElement) : void {
                 eventName: ["touchstart"],
                 useCapture: false,
                 action: (evt : TouchEvent) : boolean => {
-                    pointerId_2 = evt.changedTouches.item(1).identifier;
+                    //selection de l'identifiant du deuxième doigt
+                    pointerId_2 = evt.changedTouches.item(0).identifier;
 
-                    Pt2_coord_parent = transfo.getPoint(
-                        evt.changedTouches.item(1).clientX,
-                        evt.changedTouches.item(1).clientY);
-
+                    //intialisation du pointeur 2
+                    let touch = getRelevantDataFromEvent(evt);
+                    Pt2_coord_parent = transfo.getPoint(touch.clientX,touch.clientY);
                     Pt2_coord_element = Pt2_coord_parent.matrixTransform(originalMatrix.inverse());
 
                     return true;
@@ -93,10 +96,17 @@ function multiTouch(element: HTMLElement) : void {
                     evt.preventDefault();
                     evt.stopPropagation();
 
-                    Pt2_coord_parent= transfo.getPoint(
-                        evt.changedTouches.item(1).clientX,
-                        evt.changedTouches.item(1).clientY);
+                    //changer le pointeur 1 ou 2 en fonction de l'évenement reçu
+                    for(let i=0; i<evt.changedTouches.length; i++) {
+                        let touch = evt.changedTouches.item(i);
+                        if (touch.identifier === pointerId_2) {
+                            Pt2_coord_parent = transfo.getPoint(touch.clientX, touch.clientY);
+                        } else {
+                            Pt1_coord_parent = transfo.getPoint(touch.clientX, touch.clientY);
+                        }
+                    }
 
+                    //rotate
                     transfo.rotozoom( element,
                         originalMatrix,
                         Pt1_coord_element,
@@ -114,8 +124,21 @@ function multiTouch(element: HTMLElement) : void {
                 eventName: ["touchend"],
                 useCapture: true,
                 action: (evt : TouchEvent) : boolean => {
+
+
                     let touch = getRelevantDataFromEvent(evt);
-                    // To be completed
+
+                    //modifier les valeurs du pointeur 1 en fonction du doigt enlevé
+                    if(touch.identifier===pointerId_1) {
+                        pointerId_1 = pointerId_2;
+                        Pt1_coord_element = Pt2_coord_element;
+                        Pt1_coord_parent = Pt2_coord_parent;}
+                    pointerId_2 = null;
+                    Pt2_coord_parent = null;
+                    Pt2_coord_element=null;
+
+                    //réinitialiser la matrice
+                    originalMatrix = transfo.getMatrixFromElement(element);
                     return true;
                 }
             }

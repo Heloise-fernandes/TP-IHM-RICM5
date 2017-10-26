@@ -102,10 +102,10 @@ export let rotozoom =   ( element           : HTMLElement
     originalMatrix.f = Pt1_coord_parent.y - s*Pt1_coord_element.x - c*Pt1_coord_element.y;
 
     setMatrixCoordToElement(element,
-        originalMatrix.a,
-        originalMatrix.b,
-        originalMatrix.c,
-        originalMatrix.d,
+        c,
+        s,
+        -s,
+        c,
         originalMatrix.e,
         originalMatrix.f);
 
